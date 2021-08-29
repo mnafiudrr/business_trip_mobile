@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1076604263578",
+    "project_id": "perjaldin",
+    "storage_bucket": "perjaldin.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1076604263578:android:8e7ca30a8a22eb737c9323",
+        "android_client_info": {
+          "package_name": "com.perjaldin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1076604263578-vgn00p5r0b4vvflc0hsp4g6aj1mmhko6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-2sAuFSKCDVOs8kxdBU1hAjwoDWegY64"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1076604263578-vgn00p5r0b4vvflc0hsp4g6aj1mmhko6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
