@@ -23,7 +23,7 @@ import {URL_LIST_ACTIVE, IP_ADDRESS} from '../../../utils/api';
 const Dashboard = ({navigation}) => {
 
 
-  const {tokenUser, dataUser, setDataUser,} = useContext(LoginContext);
+  const {tokenUser, dataUser, setDataUser} = useContext(LoginContext);
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
@@ -52,7 +52,9 @@ const Dashboard = ({navigation}) => {
       setRefreshing(false);
     })
     .catch(function (error) {
+      console.log("=== error ===");
       console.log(error);
+      console.log("=== +++++ ===");
       setLoading(false);
       setRefreshing(false);
     });

@@ -14,13 +14,19 @@ import SuccessModal from '../../../components/molekuls/Modals/SuccessModal';
 
 const ModalPengajuanDana = (props) => {
 
-    const [nominal, setNominal] = useState("");
+    const [data, setData] = useState({
+        id: props.id,
+        nominal: '',
+        keterangan_request: '',
+    });
+
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
 
     const onConfirm = () => {
         // setLoading(true);
-        setSuccess(true);
+        // setSuccess(true);
+        console.log(data);
     }
     
     const closeSuccess = () => {
@@ -35,10 +41,15 @@ const ModalPengajuanDana = (props) => {
             <Text style={styles.modalText}>Pengajuan Dana</Text>
             <InputText
                 label="Nominal"
-                value={nominal}
-                onChange={setNominal}
+                value={data.nominal}
+                onChange={(value) => setData({...data, nominal: value})}
                 type="numeric"
                 currency={true}
+            />
+            <InputText
+                label="Keterangan"
+                value={data.keterangan_request}
+                onChange={(value) => setData({...data, keterangan_request: value})}
             />
             <TouchableOpacity style={styles.button} onPress={onConfirm}>
                 <Text style={styles.buttonText}>Ajukan</Text>

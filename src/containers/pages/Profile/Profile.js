@@ -19,30 +19,25 @@ import TopProfile from '../../../components/molekuls/TopProfile';
 import axios from 'axios';
 import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {URL_USER, URL_LOGOUT, IP_ADDRESS, URL_LIST_ACTIVE} from '../../../utils/api';
+import {URL_USER, URL_LOGOUT, IP_ADDRESS} from '../../../utils/api';
+import { useIsFocused } from '@react-navigation/native';
 
 const Profile = ({navigation}) => {
 
   const {tokenUser, dataUser, setDataUser,} = useContext(LoginContext);
 
-  console.log(dataUser);
+  const isFocused = useIsFocused();
 
   const [token, setToken] = useState();
   const [isLoading, setLoading] = useState(false);
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    getData();
-    const unsubscribe = navigation.addListener('focus', () => {
-      // setLoading(true);
+    if(isFocused){
+      setLoading(true);
       getData();
-    });
-    return () => {
-      // Unsubscribe for the focus Listener
-      unsubscribe;
-    };
-
-  }, [navigation]);
+    }
+  }, [isFocused]);
 
   const getData = async () => {
     try {
@@ -69,9 +64,11 @@ const Profile = ({navigation}) => {
     .then(function (response) {
       setData(response.data.data);
       setDataUser(response.data.data);
+      setLoading(false);
     })
     .catch(function (error) {
       console.log(error);
+      setLoading(false);
     });
   }
 

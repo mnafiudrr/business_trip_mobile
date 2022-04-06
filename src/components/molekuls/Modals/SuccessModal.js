@@ -4,7 +4,8 @@ import {
   Text,
   Image,
   TouchableOpacity,
-  StyleSheet
+  StyleSheet,
+  Pressable
 } from 'react-native';
 import Modal from 'react-native-modal';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
@@ -15,10 +16,10 @@ const SuccessModal = (props) => {
           onBackButtonPress={props.close}
           onBackdropPress={props.close}
         >
-            <View style={styles.success}>
+            <Pressable style={styles.success} onPress={props.close}>
                 <Image source={require('../../../assets/icons/checked.png')} style={styles.icon} />
                 <Text style={styles.Text}>Berhasil</Text>
-            </View>
+            </Pressable>
         </Modal>
     );
 }

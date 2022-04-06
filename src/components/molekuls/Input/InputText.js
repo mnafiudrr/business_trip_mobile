@@ -1,7 +1,6 @@
 
-import React, { useRef } from 'react';
+import React from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
   View,
   Text,
@@ -11,7 +10,6 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 import NumberFormat from 'react-number-format';
 
 const InputText = (props) => {
-    console.log(props.value)
     return (
         <View style={styles.container}>
             <Text style={styles.title}>{props.label}</Text>
@@ -42,6 +40,7 @@ const InputText = (props) => {
                             value={props.value}
                             onChangeText={value => props.onChange(value)}
                             keyboardType={props.type}
+                            editable={!props.readonly}
                         />
                     )
                 

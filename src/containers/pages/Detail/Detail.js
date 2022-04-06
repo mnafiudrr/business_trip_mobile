@@ -25,11 +25,13 @@ import Loading from '../../templates/Detail/Loading';
 import Toast from 'react-native-simple-toast';
 import Modal from 'react-native-modal';
 import ModalPengajuanDana from '../../organizms/spt/ModalPengajuanDana';
+import { useIsFocused } from '@react-navigation/native';
 
 
 const Detail = ({route, navigation}) => {
   const back = BACK_BUTTON("back");
   const { spkId } = route.params;
+  const isFocused = useIsFocused();
 
   const [detail, setDetail] = useState();
   const [isKoor, setKoor] = useState();
@@ -39,9 +41,10 @@ const Detail = ({route, navigation}) => {
   const [modalAjukanDana, setModalAjukanDana] = useState(false);
 
   useEffect(() => {
-    getSpk()
-    // storeKoor(detail.delegasi)
-  }, []);
+    if(isFocused){
+      getSpk();
+    }
+  }, [isFocused]);
 
 
   const onRefresh = React.useCallback(() => {
