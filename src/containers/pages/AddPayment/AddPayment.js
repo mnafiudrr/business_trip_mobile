@@ -23,6 +23,7 @@ import DocumentPicker from 'react-native-document-picker';
 import Toast from 'react-native-simple-toast';
 import SelectModal from '../../../components/molekuls/Modals/SelectModal';
 import useAddPayment from './useAddPayment';
+import Select2Modal from '../../../components/molekuls/Modals/Select2Modal';
 
 const jenis_pengeluaran = [
   {
@@ -68,25 +69,10 @@ const AddPayment = ({route, navigation}) => {
     keterangan : '',
     bukti : null,
     jenis_pengeluaran_id: 4,
-    jumlah_penginapan: 1,
   });
 
   // Data Penginapan
-  const [penginapan, setPenginapan] = useState([basePenginapan]);
-  useEffect(() => {
-
-    let jml = dataTransaksi.jumlah_penginapan;
-    if(!jml || jml < 1){
-      setDataTransaksi(1);
-      jml = 1;
-    }
-    let penginapan_temp = [];
-    for(let i = 0; i < dataTransaksi.jumlah_penginapan; i++){
-      penginapan_temp.push(basePenginapan);
-    }
-    setPenginapan(penginapan_temp);
-    console.log(dataTransaksi.jumlah_penginapan);
-  }, [dataTransaksi.jumlah_penginapan]);
+  const [penginapan, setPenginapan] = useState(basePenginapan);
 
   // Loading
   const [isLoading, setLoading] = useState(false);
@@ -175,31 +161,36 @@ const AddPayment = ({route, navigation}) => {
               label={'Jenis Pengeluaran'}
               lists={jenis_pengeluaran}
             />
+            <Select2Modal
+              label={'Jenis Pengeluaran'}
+              lists={jenis_pengeluaran}
+            
+            />
             {
               dataTransaksi.jenis_pengeluaran_id == 1 ? 
               (
                 <>
                   <InputText
-                      label="Jumlah penginapan"
-                      value={dataTransaksi.jumlah_penginapan.toString()}
-                      onChange={(value) => {
-                        setDataTransaksi({...dataTransaksi, jumlah_penginapan: value ? parseInt(value) : 1})
-                      }}
-                      type="numeric"
+                    label="Nama Penginapan"
+                    value={penginapan.nama}
+                    onChange={(value) => setPenginapan({...penginapan, nama: value})}
                   />
-                  {
-                    penginapan.map((item, index) => {
-                      return (
-                        <InputText
-                            key={index}
-                            label="Test"
-                            value={dataTransaksi.jumlah_penginapan}
-                            onChange={(value) => setDataTransaksi({...dataTransaksi, jumlah_penginapan: value})}
-                            type="numeric"
-                        />
-                      )
-                    })
-                  }
+                  <InputText
+                    label="Nomor Kamar"
+                    value={penginapan.no_kamar}
+                    onChange={(value) => setPenginapan({...penginapan, no_kamar: value})}
+                  />
+                  <InputText
+                    label="Jumlah Malam"
+                    value={penginapan.malam}
+                    onChange={(value) => setPenginapan({...penginapan, malam: value})}
+                    type="numeric"
+                  />
+                  <InputText
+                    label="Keterangan"
+                    value={penginapan.ket}
+                    onChange={(value) => setPenginapan({...penginapan, ket: value})}
+                  />
                 </>
               ) : null
             }
