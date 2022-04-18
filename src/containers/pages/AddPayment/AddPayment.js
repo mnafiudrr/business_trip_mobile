@@ -128,12 +128,12 @@ const AddPayment = ({route, navigation}) => {
           Toast.show('Unggah Berhasil', Toast.LONG);
           navigation.navigate('Detail');
         }
+      } else if (dataTransaksi.jenis_pengeluaran_id == 1) {
+
       }
     }else{
-      console.log('data belum lengkap')
       Toast.show('Data belum lengkap', Toast.LONG);
     }
-    
   }
 
   return (
@@ -170,12 +170,6 @@ const AddPayment = ({route, navigation}) => {
               label={'Jenis Pengeluaran'}
               lists={jenis_pengeluaran}
             />
-            <Select2Modal
-              label={'Penginap'}
-              lists={daftarDelegasi}
-              value={penginapan.karyawan}
-              onSelect={(value) => {setPenginapan({ ...penginapan, karyawan: value })}}
-            />
             {
               dataTransaksi.jenis_pengeluaran_id == 1 ? 
               (
@@ -192,14 +186,20 @@ const AddPayment = ({route, navigation}) => {
                   />
                   <InputText
                     label="Jumlah Malam"
-                    value={penginapan.malam}
-                    onChange={(value) => setPenginapan({...penginapan, malam: value})}
+                    value={String(penginapan.malam)}
+                    onChange={(value) => setPenginapan({...penginapan, malam: value.replace(/\D/g,'')})}
                     type="numeric"
                   />
                   <InputText
                     label="Keterangan"
                     value={penginapan.ket}
                     onChange={(value) => setPenginapan({...penginapan, ket: value})}
+                  />
+                  <Select2Modal
+                    label={'Penginap'}
+                    lists={daftarDelegasi}
+                    value={penginapan.karyawan}
+                    onSelect={(value) => {setPenginapan({ ...penginapan, karyawan: value })}}
                   />
                 </>
               ) : null
