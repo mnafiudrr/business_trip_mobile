@@ -60,9 +60,10 @@ const AddPayment = ({route, navigation}) => {
   // Custom Hooks
   
   // Data Utama
-  const { id, nomor_spt } = route.params;
+  const { id, nomor_spt, delegasi } = route.params;
   const { dataUser, tokenUser } = useContext(LoginContext);
   const { transaksiLainnya } = useAddPayment(URL_TRANSACTION_OUT, id, tokenUser);
+  const [daftarDelegasi, setDaftarDelegasi] = useState([]);
   const [dataTransaksi, setDataTransaksi] = useState({
     spt_id : id,
     nominal : '',
@@ -70,9 +71,17 @@ const AddPayment = ({route, navigation}) => {
     bukti : null,
     jenis_pengeluaran_id: 4,
   });
-
   // Data Penginapan
   const [penginapan, setPenginapan] = useState(basePenginapan);
+
+  // Delegasi
+  useEffect(() => {
+    let temp_delegasi = [];
+    delegasi.map((item, index) => {
+      temp_delegasi.push({label: item.pegawai, value: item.id});
+    });
+    setDaftarDelegasi(temp_delegasi);
+  },[]);
 
   // Loading
   const [isLoading, setLoading] = useState(false);
@@ -162,9 +171,10 @@ const AddPayment = ({route, navigation}) => {
               lists={jenis_pengeluaran}
             />
             <Select2Modal
-              label={'Jenis Pengeluaran'}
-              lists={jenis_pengeluaran}
-            
+              label={'Penginap'}
+              lists={daftarDelegasi}
+              value={penginapan.karyawan}
+              onSelect={(value) => {setPenginapan({ ...penginapan, karyawan: value })}}
             />
             {
               dataTransaksi.jenis_pengeluaran_id == 1 ? 

@@ -9,12 +9,8 @@ import InputText from '../Input/InputText';
 
 const Select2Modal = (props) => {
   const [dropDown, setDropDown] = useState(false);
-
+  const [lines, setLines] = useState(1);
   const [selected, setSelected] = useState('');
-  const [selectedLabel, setSelectedLabel] = useState('');
-  const [selectedValue, setSelectedValue] = useState('');
-
-  const [searched, setSearched] = useState('');
   const [filteredList, setFilteredList] = useState(props.lists);
 
   useEffect(() => {
@@ -22,8 +18,6 @@ const Select2Modal = (props) => {
     if (props.value) {
       const list = props.lists.filter((item) => item.value == props.value);
       if (list[0]) {
-        setSelectedValue(list[0].value);
-        setSelectedLabel(list[0].label);
         props.showValue ? setSelected(`${list[0].value} - ${list[0].label}`) : setSelected(list[0].label);
       }
     }
@@ -40,22 +34,25 @@ const Select2Modal = (props) => {
 
   useEffect(() => {
     if (props.value) {
-      const list = props.lists.filter((item) => item.value == props.value);
-      if (list[0]) {
-        setSelectedValue(list[0].value);
-        setSelectedLabel(list[0].label);
-        props.showValue ? setSelected(`${list[0].value} - ${list[0].label}`) : setSelected(list[0].label);
-      }
-    }
-  }, [props.value]);
+      setLines(props.value.length ?? 1);
+      let temp_text = '';
+      props.value.map((value_item, index) => {
+        const props_value = props.lists.filter((item) => item.value == value_item);
+        if(props_value[0]){
+          if(index == 0){
+            temp_text = props_value[0].label;
+          }else{
+            temp_text = `${temp_text},\n${props_value[0].label}`;
+          }
+        }
+      });
 
-  useEffect(() => {
-    if (selectedValue) {
-      props.showValue ? setSelected(`${selectedValue} - ${selectedLabel}`) : setSelected(selectedLabel);
-    } else {
+      setSelected(temp_text);
+
+    }else{
       setSelected('');
     }
-  }, [selectedValue]);
+  }, [props.value]);
 
   const selecting = () => {
     // setActive(true);
@@ -70,7 +67,7 @@ const Select2Modal = (props) => {
     temp_list.map((item, index) => {
       temp_selected.push(item.value);
     });
-    console.log(temp_selected);
+    props.onSelect(temp_selected);
     setDropDown(false);
   };
 
@@ -79,24 +76,8 @@ const Select2Modal = (props) => {
     let temp_list = filteredList;
     temp_list[index].selected = !temp_list[index].selected;
     setFilteredList(temp_list);
-    console.log(temp_list);
 
   }
-
-  useEffect(() => {
-    if (props.lists) {
-      if (props.showValue) {
-        const filter = props.lists.filter((item) => item.label.toUpperCase()
-          .indexOf(searched.toUpperCase()) !== -1 || item.value.toUpperCase()
-            .indexOf(searched.toUpperCase()) !== -1);
-        setFilteredList(filter);
-      } else {
-        const filter = props.lists.filter((item) => item.label.toUpperCase()
-          .indexOf(searched.toUpperCase()) !== -1);
-        setFilteredList(filter);
-      }
-    }
-  }, [searched]);
 
   return (
     <>
@@ -105,6 +86,8 @@ const Select2Modal = (props) => {
           label={props.label}
           value={selected}
           readonly={true}
+          multiline={true}
+          numberOfLines={lines}
         />
       </Pressable>
       <Modal

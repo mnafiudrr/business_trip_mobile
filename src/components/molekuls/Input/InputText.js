@@ -36,11 +36,13 @@ const InputText = (props) => {
                     :
                     (
                         <TextInput 
-                            style={styles.inputText}
+                            style={[styles.inputText, props.multiline ? null : {height:wp(11)}]}
                             value={props.value}
                             onChangeText={value => props.onChange(value)}
                             keyboardType={props.type}
                             editable={!props.readonly}
+                            multiline={props.multiline}
+                            numberOfLines={props.numberOfLines ?? 1}
                         />
                     )
                 
@@ -62,7 +64,6 @@ const styles = StyleSheet.create({
     inputBox: {
     },
     inputText: {
-        height:wp(11),
         borderWidth:1,
         paddingHorizontal:wp(3),
         borderRadius:wp(2),

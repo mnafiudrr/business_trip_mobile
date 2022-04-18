@@ -27,7 +27,7 @@ const SpendingList = (props) => {
                 {
                     props.is_koor?
                     (
-                    <Pressable onPress={() => navigation.navigate('AddPayment',{ id:props.id, nomor_spt:props.nomor_spt })}>
+                    <Pressable onPress={() => navigation.navigate('AddPayment',{ id:props.id, nomor_spt:props.nomor_spt, delegasi: props.delegasi })}>
                         <Text style={styles.button}>+ Tambah</Text>
                     </Pressable>
                     ):null
