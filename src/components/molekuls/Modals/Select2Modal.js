@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import CheckBox from '@react-native-community/checkbox';
 import {
   Pressable, StyleSheet, View, Text, ScrollView, TextInput
 } from 'react-native';
@@ -126,16 +127,21 @@ const Select2Modal = (props) => {
                     // setSelectedValue(item.value);
                     // props.onSelect(item.value);
                     // {props.extraValue ? props.extraValue(item.label) : null;}
-                    optionClick(index);
+                    // optionClick(index);
                   }}
                   key={item.value}
                   style={[
                     styles.list,
                     index != 0 ? {borderTopWidth: 0.5} : null,
                     props.centeredLabel ? {alignItems: 'center'} : null,
-                    item.selected ? {backgroundColor:'#b5b5b5'} : null,
+                    // item.selected ? {backgroundColor:'#b5b5b5'} : null,
                   ]}
                 >
+                  <CheckBox
+                    disabled={false}
+                    value={item.selected}
+                    onValueChange={(newValue) => optionClick(index)}
+                  />
                   <Text style={{fontSize: wp(3.7), fontWeight:'bold'}}>
                     {item.label}
                   </Text>

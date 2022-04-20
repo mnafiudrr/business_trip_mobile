@@ -9,6 +9,7 @@ import {
   Pressable,
   Image
 } from 'react-native';
+import CheckBox from '@react-native-community/checkbox';
 import { COLOR_WHITE, color_background_putih,  color_header_background_putih } from '../../../utils/colors'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { LoginContext } from "../../../contexts/LoginContext";
@@ -45,11 +46,11 @@ const jenis_pengeluaran = [
 ]
 
 const basePenginapan = {
-  nama:'',
-  no_kamar: '',
+  nama:'MoeToel',
+  no_kamar: 'H1',
   nominal: null,
   malam: 1,
-  ket: '',
+  ket: 'Keterangan Penginapan',
   total: null,
   karyawan: [],
 }
@@ -62,29 +63,74 @@ const AddPayment = ({route, navigation}) => {
   // Data Utama
   const { id, nomor_spt, delegasi } = route.params;
   const { dataUser, tokenUser } = useContext(LoginContext);
-  const { transaksiLainnya } = useAddPayment(URL_TRANSACTION_OUT, id, tokenUser);
+  const { transaksiLainnya, transaksiPenginapan, transportList, transaksiTransportasi } = useAddPayment(URL_TRANSACTION_OUT, id, tokenUser);
   const [daftarDelegasi, setDaftarDelegasi] = useState([]);
+  const [daftarPenerimaUangSaku, setDaftarPenerimaUangSaku] = useState([]);
   const [dataTransaksi, setDataTransaksi] = useState({
     spt_id : id,
-    nominal : '',
-    keterangan : '',
+    nominal : '200000',
+    keterangan : 'Test Kendaraan',
     bukti : null,
     jenis_pengeluaran_id: 4,
+    tipe_pengeluaran_transport_id: 1,
   });
+
   // Data Penginapan
   const [penginapan, setPenginapan] = useState(basePenginapan);
 
-  // Delegasi
+  // Data Transportasi
+  const [daftarTransport, setDaftarTransport] = useState([]);
+
+  // Init Delegasi & Daftar Transport 
   useEffect(() => {
+
     let temp_delegasi = [];
     delegasi.map((item, index) => {
-      temp_delegasi.push({label: item.pegawai, value: item.id});
+      temp_delegasi.push({
+        label: item.pegawai,
+        value: item.id,
+        selected: true
+      });
     });
     setDaftarDelegasi(temp_delegasi);
+    // setDaftarPenerimaUangSaku(temp_delegasi);
+
+    getTransportList();
+
   },[]);
+
+  useEffect(() => {
+    setPenginapan({
+      ...penginapan,
+      nominal: dataTransaksi.nominal,
+      total: dataTransaksi.nominal,
+    });
+  },[dataTransaksi.nominal]);
+
+  useEffect(() => {
+    let karyawan = [];
+    daftarDelegasi.map((item) => {
+      if ( item.selected ) karyawan.push(item.value);
+    });
+    setPenginapan({...penginapan, karyawan});
+  },[daftarDelegasi]);
 
   // Loading
   const [isLoading, setLoading] = useState(false);
+
+  // Get Jenis Pengeluaran Transport
+  const getTransportList = async () => {
+    const response = await transportList();
+    let temp_transport = [];
+    if(response.data && response.data.data){
+      response.data.data.map((item) => temp_transport.push({
+        ...item,
+        value: item.id,
+        label: item.nama,
+      }));
+    }
+    setDaftarTransport(temp_transport);
+  }
 
   // Image Picker
   const [file, setFile] = useState();
@@ -117,20 +163,44 @@ const AddPayment = ({route, navigation}) => {
   }
 
   const toggleUpload = async() => {
+    setLoading(true);
     if(dataTransaksi.nominal && dataTransaksi.keterangan && gambarTerisi){
       if(dataTransaksi.jenis_pengeluaran_id == 4){
+
         const response = await transaksiLainnya(dataTransaksi, file);
-        setLoading(false)
+        setLoading(false);
         if(!response){
-          console.log(error.response.data);
           Toast.show('Unggah Gagal', Toast.LONG);
         }else{
           Toast.show('Unggah Berhasil', Toast.LONG);
           navigation.navigate('Detail');
         }
+
       } else if (dataTransaksi.jenis_pengeluaran_id == 1) {
 
+        const response = await transaksiPenginapan(dataTransaksi, file, penginapan);
+        setLoading(false);
+        if(!response){
+          Toast.show('Unggah Gagal', Toast.LONG);
+        }else{
+          Toast.show('Unggah Berhasil', Toast.LONG);
+          navigation.navigate('Detail');
+        }
+        
+      } else if (dataTransaksi.jenis_pengeluaran_id == 2) {
+        
+        const response = await transaksiTransportasi(dataTransaksi, file);
+        setLoading(false);
+        if(!response){
+          Toast.show('Unggah Gagal', Toast.LONG);
+        }else{
+          Toast.show('Unggah Berhasil', Toast.LONG);
+          navigation.navigate('Detail');
+        }
+
       }
+
+
     }else{
       Toast.show('Data belum lengkap', Toast.LONG);
     }
@@ -195,16 +265,54 @@ const AddPayment = ({route, navigation}) => {
                     value={penginapan.ket}
                     onChange={(value) => setPenginapan({...penginapan, ket: value})}
                   />
-                  <Select2Modal
-                    label={'Penginap'}
-                    lists={daftarDelegasi}
-                    value={penginapan.karyawan}
-                    onSelect={(value) => {setPenginapan({ ...penginapan, karyawan: value })}}
-                  />
+                  <View>
+                    <Text style={{fontSize: wp(5), fontWeight: 'bold'}}>
+                      Peserta
+                    </Text>
+                    {
+                      daftarDelegasi.map((item, index) => {
+                        return (
+                          <View style={{flexDirection:'row'}} key={index}>
+                              <CheckBox
+                                disabled={false}
+                                value={item.selected}
+                                onValueChange={(newValue) => setDaftarDelegasi([...daftarDelegasi].map(object => {
+                                  if(object.value === item.value) {
+                                    return {
+                                      ...object,
+                                      selected: newValue
+                                    }
+                                  }
+                                  else return object;
+                                  }))
+                                }
+                              />
+                              <Text style={{fontSize:wp(4.5), paddingTop: wp(0.6)}}>
+                                {item.label}
+                              </Text>
+                          </View>
+                        )
+                      })
+                    }
+                  </View>
                 </>
               ) : null
             }
+            {
+              dataTransaksi.jenis_pengeluaran_id == 2 ?
+              (
+                <SelectModal 
+                  value={dataTransaksi.tipe_pengeluaran_transport_id}
+                  onSelect={(value) => setDataTransaksi({...dataTransaksi, tipe_pengeluaran_transport_id: value})}
+                  label={'Tipe Pengeluaran'}
+                  lists={daftarTransport}
+                />
+              ) : null
+            }
             <Pressable onPress={togglePicker}>
+              <Text style={{fontSize: wp(5), fontWeight: 'bold'}}>
+                Bukti Transaksi
+              </Text>
               <View style={styles.upload}>
                 {
                   gambarTerisi?
@@ -221,7 +329,7 @@ const AddPayment = ({route, navigation}) => {
                         source={require('../../../assets/icons/image-gallery.png')}
                       />
                       <Text>
-                        Pick Slip
+                        Unggah
                       </Text>
                     </>
                   )

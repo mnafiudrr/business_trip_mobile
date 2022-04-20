@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
         paddingHorizontal:wp(3),
         borderRadius:wp(2),
         fontSize:wp(4),
+        color: 'black',
     }
 });
 
