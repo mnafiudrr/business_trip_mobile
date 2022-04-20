@@ -63,9 +63,8 @@ const AddPayment = ({route, navigation}) => {
   // Data Utama
   const { id, nomor_spt, delegasi } = route.params;
   const { dataUser, tokenUser } = useContext(LoginContext);
-  const { transaksiLainnya, transaksiPenginapan, transportList, transaksiTransportasi } = useAddPayment(URL_TRANSACTION_OUT, id, tokenUser);
+  const { transaksiLainnya, transaksiPenginapan, transportList, transaksiTransportasi, transaksiUangSaku } = useAddPayment(URL_TRANSACTION_OUT, id, tokenUser);
   const [daftarDelegasi, setDaftarDelegasi] = useState([]);
-  const [daftarPenerimaUangSaku, setDaftarPenerimaUangSaku] = useState([]);
   const [dataTransaksi, setDataTransaksi] = useState({
     spt_id : id,
     nominal : '200000',
@@ -73,6 +72,7 @@ const AddPayment = ({route, navigation}) => {
     bukti : null,
     jenis_pengeluaran_id: 4,
     tipe_pengeluaran_transport_id: 1,
+    user_id: null,
   });
 
   // Data Penginapan
@@ -93,7 +93,6 @@ const AddPayment = ({route, navigation}) => {
       });
     });
     setDaftarDelegasi(temp_delegasi);
-    // setDaftarPenerimaUangSaku(temp_delegasi);
 
     getTransportList();
 
@@ -190,6 +189,17 @@ const AddPayment = ({route, navigation}) => {
       } else if (dataTransaksi.jenis_pengeluaran_id == 2) {
         
         const response = await transaksiTransportasi(dataTransaksi, file);
+        setLoading(false);
+        if(!response){
+          Toast.show('Unggah Gagal', Toast.LONG);
+        }else{
+          Toast.show('Unggah Berhasil', Toast.LONG);
+          navigation.navigate('Detail');
+        }
+
+      } else if (dataTransaksi.jenis_pengeluaran_id == 3) {
+        
+        const response = await transaksiUangSaku(dataTransaksi, file);
         setLoading(false);
         if(!response){
           Toast.show('Unggah Gagal', Toast.LONG);
@@ -306,6 +316,17 @@ const AddPayment = ({route, navigation}) => {
                   onSelect={(value) => setDataTransaksi({...dataTransaksi, tipe_pengeluaran_transport_id: value})}
                   label={'Tipe Pengeluaran'}
                   lists={daftarTransport}
+                />
+              ) : null
+            }
+            {
+              dataTransaksi.jenis_pengeluaran_id == 3 ?
+              (
+                <SelectModal 
+                  value={dataTransaksi.user_id}
+                  onSelect={(value) => setDataTransaksi({...dataTransaksi, user_id: value})}
+                  label={'Penerima'}
+                  lists={daftarDelegasi}
                 />
               ) : null
             }

@@ -136,11 +136,43 @@ const useAddPayment = (url, spt_id, tokenUser) => {
 
   }
 
+  const transaksiUangSaku = async (dataTransaksi, image) => {
+    let data = new FormData();
+    data.append('spt_id', spt_id);
+    data.append('nominal', dataTransaksi.nominal);
+    data.append('keterangan', dataTransaksi.keterangan);
+    data.append('user_id', dataTransaksi.user_id);
+    data.append('jenis_pengeluaran_id', 3);
+    data.append('bukti_transaksi', image);
+    try {
+      
+      const promise = await axios({
+        method: 'post',
+        url,
+        headers: {
+          'Authorization': 'Bearer '+tokenUser,
+          'Content-Type': 'multipart/form-data',
+        },
+        data: data,
+      });
+
+      return promise;
+
+    } catch (error) {
+      
+      console.log(error);
+      return false;
+
+    }
+
+  }
+
   return {
     transportList,
     transaksiLainnya,
     transaksiPenginapan,
     transaksiTransportasi,
+    transaksiUangSaku,
   }
 
 }
