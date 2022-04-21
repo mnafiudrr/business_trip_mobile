@@ -6,47 +6,44 @@ import {
   Text,
   TouchableOpacity
 } from 'react-native';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
-import InputText from '../../../components/molekuls/Input/InputText';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Spinner from 'react-native-loading-spinner-overlay';
-import Modal from 'react-native-modal';
 import SuccessModal from '../../../components/molekuls/Modals/SuccessModal';
 import axios from 'axios';
 import { LoginContext } from '../../../contexts/LoginContext';
-import { URL_REQUEST_DANA } from '../../../utils/api';
+import { URL_REQUEST_DANA, URL_SPT_SELESAI } from '../../../utils/api';
 
-const ModalPengajuanDana = (props) => {
+const ModalSelesaiDinas = (props) => {
 
     const { tokenUser } = useContext(LoginContext);
     const [data, setData] = useState({
         id: props.id,
-        nominal: '',
-        keterangan_request: '',
     });
 
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
 
     const onConfirm = async () => {
-        // setLoading(true);
+        setLoading(true);
         try {
             
             const promise = await axios({
                 method: 'post',
-                url: URL_REQUEST_DANA,
+                url: URL_SPT_SELESAI,
                 headers: {
                 'Authorization': 'Bearer '+tokenUser,
                 },
                 data,
             });
 
-            console.log(promise);
+            setLoading(false);
             setSuccess(true);
-
-        } catch (error) {
-            console.log('======== ERROR =======');
-            console.log(error.response.data);
-            console.log(data);
+            
+          } catch (error) {
+          setLoading(false);
+          console.log('======== ERROR =======');
+          console.log(error.response.data);
+          console.log(data);
         }
     }
     
@@ -58,30 +55,22 @@ const ModalPengajuanDana = (props) => {
   return (
       <>
         <View style={styles.warningModal}>
-            <View style={styles.modalView}>
-            <Text style={styles.modalText}>Pengajuan Dana</Text>
-            <InputText
-                label="Nominal"
-                value={data.nominal}
-                onChange={(value) => setData({...data, nominal: value})}
-                type="numeric"
-                currency={true}
-            />
-            <InputText
-                label="Keterangan"
-                value={data.keterangan_request}
-                onChange={(value) => setData({...data, keterangan_request: value})}
-            />
-            <TouchableOpacity style={styles.button} onPress={onConfirm}>
-                <Text style={styles.buttonText}>Ajukan</Text>
-            </TouchableOpacity>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>Yakin untuk menyelesaikan dinas?</Text>
+            <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+              <TouchableOpacity style={styles.buttonCancel} onPress={onConfirm}>
+                  <Text style={styles.buttonText}>Batal</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.button} onPress={onConfirm}>
+                  <Text style={styles.buttonText}>Selesai</Text>
+              </TouchableOpacity>
             </View>
-            
+          </View>
         </View>
         <Spinner
-        visible={loading}
-        textContent={'Loading...'}
-        textStyle={styles.spinnerTextStyle}
+          visible={loading}
+          textContent={'Loading...'}
+          textStyle={styles.spinnerTextStyle}
         />
         <SuccessModal
             visible={success}
@@ -117,14 +106,30 @@ const styles = StyleSheet.create({
     button:{
         backgroundColor:'#25aef0',
         height:wp(11),
+        width:wp(38),
         paddingHorizontal:wp(3),
         borderRadius:wp(2),
         alignItems:'center',
         justifyContent:'center',
-        marginTop:wp(5)
+        marginTop:wp(5),
+    },
+    buttonCancel:{
+        backgroundColor:'#c4c4c4',
+        height:wp(11),
+        width:wp(38),
+        paddingHorizontal:wp(3),
+        borderRadius:wp(2),
+        alignItems:'center',
+        justifyContent:'center',
+        marginTop:wp(5),
     },
     buttonText: {
         color:'white',
+        fontSize:wp(4.6),
+        fontWeight:'bold',
+    },
+    buttonTextCancel: {
+        color:'black',
         fontSize:wp(4.6),
         fontWeight:'bold',
     },
@@ -137,4 +142,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ModalPengajuanDana;
+export default ModalSelesaiDinas;

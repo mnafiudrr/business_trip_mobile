@@ -14,3 +14,9 @@ export const URL_DANA_OUT = IP_ADDRESS + 'api/spt/dana/keluar';
 // Transaction
 export const URL_TRANSACTION_OUT = `${IP_ADDRESS}api/transaksi/keluar`;
 export const URL_TRANSACTION_TRANSPORT_LIST = `${IP_ADDRESS}api/transaksi/transport-list`;
+
+// Request Dana
+export const URL_REQUEST_DANA = `${IP_ADDRESS}api/spt/request`;
+
+// Selesai SPT
+export const URL_SPT_SELESAI = `${IP_ADDRESS}api/spt/selesai`;

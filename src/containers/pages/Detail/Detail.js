@@ -26,6 +26,7 @@ import Toast from 'react-native-simple-toast';
 import Modal from 'react-native-modal';
 import ModalPengajuanDana from '../../organizms/spt/ModalPengajuanDana';
 import { useIsFocused } from '@react-navigation/native';
+import ModalSelesaiDinas from '../../organizms/spt/ModalSelesaiDinas';
 
 
 const Detail = ({route, navigation}) => {
@@ -39,6 +40,7 @@ const Detail = ({route, navigation}) => {
   const { dataUser, tokenUser } = useContext(LoginContext);
   const [warning, setWarning] = useState(false);
   const [modalAjukanDana, setModalAjukanDana] = useState(false);
+  const [modalSelesaiDinas, setModalSelesaiDinas] = useState(false);
 
   useEffect(() => {
     if(isFocused){
@@ -79,7 +81,7 @@ const Detail = ({route, navigation}) => {
       setRefreshing(false);
     })
     .catch(function (error) {
-      console.log(error);
+      console.log(error.response.data);
       setRefreshing(false);
     });
   }
@@ -94,6 +96,11 @@ const Detail = ({route, navigation}) => {
 
   const closeAjukanDana = () => {
     setModalAjukanDana(false);
+    onRefresh();
+  }
+
+  const closeSelesaiDinas = () => {
+    setModalSelesaiDinas(false);
     onRefresh();
   }
 
@@ -124,16 +131,36 @@ const Detail = ({route, navigation}) => {
                 currency={detail.saldo}
                 status={detail.is_active?"Aktif":"Selesai"}
                 total={detail.jumlah_anggaran}
+                status_tambahan_dana={detail.status_tambahan_dana}
               />
             </View>
-            <View style={[styles.card,{flexDirection:'row', justifyContent:'space-evenly'}]}>
-              <TouchableOpacity style={styles.button} onPress={ajukanDana}>
-                <Text style={styles.buttonText}>AJUKAN DANA</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[styles.button,{backgroundColor:'orange'}]}>
-                <Text style={styles.buttonText}>SELESAI DINAS</Text>
-              </TouchableOpacity>
-            </View>
+            {
+              detail.is_active? 
+              (
+                <View style={[styles.card,{flexDirection:'row', justifyContent:'space-evenly'}]}>
+                  {
+                    detail.status_tambahan_dana != 1 ? (
+                      <TouchableOpacity style={styles.button} onPress={ajukanDana}>
+                        <Text style={styles.buttonText}>AJUKAN DANA</Text>
+                      </TouchableOpacity>
+                    ) : null
+                  }
+                  <TouchableOpacity 
+                    style={[styles.button,{backgroundColor:'orange'}]}
+                    onPress={() => setModalSelesaiDinas(true)}>
+                    <Text style={styles.buttonText}>SELESAI DINAS</Text>
+                  </TouchableOpacity>
+                </View>
+              ) : (
+                <View style={[styles.card,{flexDirection:'row', justifyContent:'space-evenly'}]}>
+                  <TouchableOpacity 
+                    style={[styles.button, {width:wp(80)}]}
+                    onPress={() => console.log('test')}>
+                    <Text style={styles.buttonText}>Kembalikan Sisa Dana</Text>
+                  </TouchableOpacity>
+                </View>
+              )
+            }
             <View style={styles.card}>
               <DelegationList 
                 list={detail.delegasi}
@@ -146,6 +173,7 @@ const Detail = ({route, navigation}) => {
                 id={detail.id}
                 nomor_spt={detail.nomor_spt}
                 is_koor={isKoor}
+                is_active={detail.is_active}
               />
             </View>
           </ScrollView>
@@ -157,11 +185,6 @@ const Detail = ({route, navigation}) => {
             >
             <View style={styles.warningModal}>
               <View style={styles.modalView}>
-                {/* <Pressable 
-                style={{alignSelf:'flex-end', paddingTop:wp(3.5), paddingRight:wp(3.5)}}
-                onPress={() => setWarning(false)}>
-                  <Text>X</Text>
-                </Pressable> */}
                 <Text style={styles.modalText}>Saldo lebih dari batas syarat pengajuan dana tambahan.</Text>
               </View>
             </View>
@@ -171,7 +194,17 @@ const Detail = ({route, navigation}) => {
             onBackdropPress={() => setModalAjukanDana(false)}
           >
             <ModalPengajuanDana
+              id={detail.id}
               closeModal={closeAjukanDana}
+            />
+          </Modal>
+          <Modal isVisible={modalSelesaiDinas}
+            onBackButtonPress={() => setModalSelesaiDinas(false)}
+            onBackdropPress={() => setModalSelesaiDinas(false)}
+          >
+            <ModalSelesaiDinas
+              id={detail.id}
+              closeModal={closeSelesaiDinas}
             />
           </Modal>
         </>

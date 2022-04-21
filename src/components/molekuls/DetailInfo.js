@@ -19,15 +19,13 @@ const DetailInfo = (props) => {
     const [fill, setFill] = useState(0);
     
     useEffect(() => {
-        calculate()
+        calculate();
     },[]);
 
     const calculate = () => {
         setFill(parseInt((props.currency/props.total)*100));
         // setFill(50);
     }
-
-
 
   return (
       <View style={styles.container}>
@@ -46,12 +44,26 @@ const DetailInfo = (props) => {
                         </Moment>  
                     </Text>
                     <View style={{flexDirection:'row'}}>
-                    <View style={[styles.statusInfo,{backgroundColor:props.status=='Aktif'?'green':'red'}]}>
-                        <Text style={styles.status}>{props.status}</Text>
-                    </View>
-                    <View style={[styles.statusInfo,{backgroundColor:props.status=='Aktif'?'#25aef0':'red'}]}>
-                        <Text style={styles.status}>Dana Ditolak</Text>
-                    </View>
+                        <View style={[styles.statusInfo,{backgroundColor:props.status=='Aktif'?'green':'red'}]}>
+                            <Text style={styles.status}>{props.status}</Text>
+                        </View>
+                        {
+                            props.status_tambahan_dana && props.status == 'Aktif' ? 
+                                props.status_tambahan_dana == 1 ? (
+                                    <View style={[styles.statusInfo,{backgroundColor:'#25aef0'}]}>
+                                        <Text style={styles.status}>Pengajuan Pending</Text>
+                                    </View>
+                                ) : props.status_tambahan_dana == 2 ? (
+                                    <View style={[styles.statusInfo,{backgroundColor:'green'}]}>
+                                        <Text style={styles.status}>Pengajuan Diterima</Text>
+                                    </View>
+                                ) : (
+                                    <View style={[styles.statusInfo,{backgroundColor:'red'}]}>
+                                        <Text style={styles.status}>Pengajuan Ditolak</Text>
+                                    </View>
+                                )
+                            : null
+                        }
                     </View>
                     <Text style={styles.currency}>
                         <NumberFormat 

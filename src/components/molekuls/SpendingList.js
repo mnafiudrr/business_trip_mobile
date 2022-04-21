@@ -25,7 +25,7 @@ const SpendingList = (props) => {
             <View style={styles.top}>
                 <Text style={styles.Label}>Pengeluaran</Text>
                 {
-                    props.is_koor?
+                    props.is_koor && props.is_active?
                     (
                     <Pressable onPress={() => navigation.navigate('AddPayment',{ id:props.id, nomor_spt:props.nomor_spt, delegasi: props.delegasi })}>
                         <Text style={styles.button}>+ Tambah</Text>
