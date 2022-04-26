@@ -122,7 +122,7 @@ const Login = ({navigation}) => {
           <View style={styles.logoBackground}>
             <Image
               style={styles.logo}
-              source={require('../../../assets/logos/logo-app.png')}/>
+              source={require('../../../assets/logos/logo-blue.png')}/>
           </View>
           <Text
             style={styles.title}

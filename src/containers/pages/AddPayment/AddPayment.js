@@ -24,7 +24,6 @@ import DocumentPicker from 'react-native-document-picker';
 import Toast from 'react-native-simple-toast';
 import SelectModal from '../../../components/molekuls/Modals/SelectModal';
 import useAddPayment from './useAddPayment';
-import Select2Modal from '../../../components/molekuls/Modals/Select2Modal';
 
 const jenis_pengeluaran = [
   {

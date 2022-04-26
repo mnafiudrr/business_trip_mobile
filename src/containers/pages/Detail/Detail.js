@@ -153,11 +153,29 @@ const Detail = ({route, navigation}) => {
                 </View>
               ) : (
                 <View style={[styles.card,{flexDirection:'row', justifyContent:'space-evenly'}]}>
-                  <TouchableOpacity 
-                    style={[styles.button, {width:wp(80)}]}
-                    onPress={() => console.log('test')}>
-                    <Text style={styles.buttonText}>Kembalikan Sisa Dana</Text>
-                  </TouchableOpacity>
+                  
+                  {
+                    detail.pengembalian_dana_status == 0 ||
+                    detail.pengembalian_dana_status == 3 ?
+                    (
+                      <TouchableOpacity 
+                        style={[styles.button, {width:wp(80)}]}
+                        onPress={() => navigation.navigate(
+                            'RefundForm',
+                            { 
+                              route_data : {
+                                id: detail.id,
+                                saldo: detail.saldo,
+                                nomor_spt: detail.nomor_spt,
+                              }
+                            }
+                          )}>
+                        <Text style={styles.buttonText}>Kembalikan Sisa Dana</Text>
+                      </TouchableOpacity>
+                    ) : (
+                      <Text style={[styles.buttonText, {color: 'black'}]}>{detail.pengembalian_dana_status == 1 ? 'Menunggu Validasi':'' } Pengembalian Sisa Dana {detail.pengembalian_dana_status == 2 ? 'Telah Divalidasi':'' }</Text>
+                    )
+                  }
                 </View>
               )
             }

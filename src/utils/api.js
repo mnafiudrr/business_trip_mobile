@@ -20,3 +20,6 @@ export const URL_REQUEST_DANA = `${IP_ADDRESS}api/spt/request`;
 
 // Selesai SPT
 export const URL_SPT_SELESAI = `${IP_ADDRESS}api/spt/selesai`;
+
+// Selesai SPT
+export const URL_PENGEMBALIAN_DANA = `${IP_ADDRESS}api/spt/pengembalian-dana`;

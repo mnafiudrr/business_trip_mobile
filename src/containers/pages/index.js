@@ -5,6 +5,7 @@ import History from './History/History'
 import Detail from './Detail/Detail'
 import Profile from './Profile/Profile'
 import AddPayment from './AddPayment/AddPayment'
+import RefundForm from './Refund/RefundForm'
 
 export {
     SplashScreen,
@@ -14,4 +15,5 @@ export {
     Detail,
     Profile,
     AddPayment,
+    RefundForm,
 }

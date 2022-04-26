@@ -70,7 +70,7 @@ const SplashScreen = ({navigation}) => {
       <View style={styles.background}>
         <Image
           style={styles.logo}
-          source={require('../../../assets/logos/logo-app.png')}/>
+          source={require('../../../assets/logos/logo-blue.png')}/>
         <Text
           style={styles.title}
         >{title}</Text>

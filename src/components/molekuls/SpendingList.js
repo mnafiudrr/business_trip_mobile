@@ -10,7 +10,6 @@ import {
   Image,
   Pressable
 } from 'react-native';
-import { COLOR_WHITE, color_background_putih, } from '../../utils/colors'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import AvatarList from './AvatarList';
 import SpendingCard from './SpendingCard';

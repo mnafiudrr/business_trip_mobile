@@ -22,6 +22,7 @@ import {
   Detail,
   Profile,
   AddPayment,
+  RefundForm,
 } from '../../containers/pages/index';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 
@@ -128,6 +129,7 @@ const Router = () => {
                <Utama.Screen name="MainView" component={MainView} />
                <Utama.Screen name="Detail" component={Detail} />
                <Utama.Screen name="AddPayment" component={AddPayment} />
+               <Utama.Screen name="RefundForm" component={RefundForm} />
               </>
               ):(
                <Utama.Screen name="Login" component={Login} />
