@@ -134,13 +134,13 @@ const Profile = ({navigation}) => {
               <View style={styles.header}>
                 <Text style={styles.headerText}>Setting</Text>
               </View>
-              <View style={styles.settingMenu}>
+              {/* <View style={styles.settingMenu}>
                 <Image 
                   source={require('../../../assets/icons/synchronize.png')}
                   style={styles.icon}
                 />
                 <Text style={styles.settingLabel}>Change Password</Text>
-              </View>
+              </View> */}
               <Pressable style={styles.settingMenu} onPress={toggleLogout}>
                 <Image 
                   source={require('../../../assets/icons/exit.png')}

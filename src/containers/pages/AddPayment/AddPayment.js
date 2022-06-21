@@ -168,7 +168,7 @@ const AddPayment = ({route, navigation}) => {
         const response = await transaksiLainnya(dataTransaksi, file);
         setLoading(false);
         if(!response){
-          Toast.show('Unggah Gagal', Toast.LONG);
+          Toast.show('Transaksi melebihi dari anggaran yang diberikan', Toast.LONG);
         }else{
           Toast.show('Unggah Berhasil', Toast.LONG);
           navigation.navigate('Detail');
@@ -179,7 +179,7 @@ const AddPayment = ({route, navigation}) => {
         const response = await transaksiPenginapan(dataTransaksi, file, penginapan);
         setLoading(false);
         if(!response){
-          Toast.show('Unggah Gagal', Toast.LONG);
+          Toast.show('Transaksi melebihi dari anggaran yang diberikan', Toast.LONG);
         }else{
           Toast.show('Unggah Berhasil', Toast.LONG);
           navigation.navigate('Detail');
@@ -190,7 +190,7 @@ const AddPayment = ({route, navigation}) => {
         const response = await transaksiTransportasi(dataTransaksi, file);
         setLoading(false);
         if(!response){
-          Toast.show('Unggah Gagal', Toast.LONG);
+          Toast.show('Transaksi melebihi dari anggaran yang diberikan', Toast.LONG);
         }else{
           Toast.show('Unggah Berhasil', Toast.LONG);
           navigation.navigate('Detail');
@@ -201,7 +201,7 @@ const AddPayment = ({route, navigation}) => {
         const response = await transaksiUangSaku(dataTransaksi, file);
         setLoading(false);
         if(!response){
-          Toast.show('Unggah Gagal', Toast.LONG);
+          Toast.show('Transaksi melebihi dari anggaran yang diberikan', Toast.LONG);
         }else{
           Toast.show('Unggah Berhasil', Toast.LONG);
           navigation.navigate('Detail');

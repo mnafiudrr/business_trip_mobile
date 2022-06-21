@@ -1,4 +1,4 @@
-export const IP_ADDRESS = 'http://54.169.76.31:10001/';
+export const IP_ADDRESS = 'http://18.142.47.4/';
 
 // Login + Data
 export const URL_LOGIN = IP_ADDRESS + 'api/login';

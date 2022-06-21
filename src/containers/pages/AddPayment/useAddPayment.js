@@ -39,7 +39,7 @@ const useAddPayment = (url, spt_id, tokenUser) => {
         },
         data: data,
       });
-
+      console.log(promise);
       return promise;
 
     } catch (error) {
@@ -85,7 +85,8 @@ const useAddPayment = (url, spt_id, tokenUser) => {
         });
 
         console.log(url, tokenUser);
-        console.log(data);
+        // console.log(data);
+        console.log(promise.data.metadata);
         return 'test'
         // return promise;
   

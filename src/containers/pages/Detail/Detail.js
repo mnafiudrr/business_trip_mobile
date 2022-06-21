@@ -135,7 +135,7 @@ const Detail = ({route, navigation}) => {
               />
             </View>
             {
-              detail.is_active? 
+              isKoor ? detail.is_active? 
               (
                 <View style={[styles.card,{flexDirection:'row', justifyContent:'space-evenly'}]}>
                   {
@@ -177,7 +177,7 @@ const Detail = ({route, navigation}) => {
                     )
                   }
                 </View>
-              )
+              ) : null
             }
             <View style={styles.card}>
               <DelegationList 
